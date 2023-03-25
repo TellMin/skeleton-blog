@@ -7,13 +7,66 @@
 	import '../app.postcss';
 	import { AppShell } from '@skeletonlabs/skeleton';
 	import { AppBar } from '@skeletonlabs/skeleton';
+	import { Drawer, drawerStore } from '@skeletonlabs/skeleton';
+	import type { DrawerSettings } from '@skeletonlabs/skeleton';
+	import Icon from '@iconify/svelte';
+
+	const drawerOpen = () => {
+		drawerStore.open(drawerSettings);
+	};
+
+	const drawerClose = () => {
+		drawerStore.close();
+	};
+
+	const drawerSettings: DrawerSettings = {
+		bgDrawer: 'drawer items-center',
+		width: 'w-[280px]'
+	};
 </script>
 
+<Drawer>
+	<div class="p-4">
+		<h1>Menu</h1>
+		<ul class="list-nav p-4">
+			<li>
+				<a href="/" on:click={drawerClose}>
+					<span class="flex-auto content-center">Home</span>
+				</a>
+			</li>
+			<li class="pt-2">
+				<a href="/about" on:click={drawerClose}>
+					<span class="flex-auto content-center">About</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+
+	<style>
+		.drawer {
+			background: linear-gradient(0deg, rgba(33, 50, 83, 1) 0%, rgba(8, 132, 124, 1) 100%);
+		}
+	</style>
+</Drawer>
+
 <AppShell>
-	<svelte:fragment slot="header"><AppBar>(title)</AppBar></svelte:fragment>
-	<svelte:fragment slot="sidebarLeft">Sidebar Left</svelte:fragment>
-	<!-- Router Slot -->
-	<slot />
-	<!-- ---- / ---- -->
-	<svelte:fragment slot="footer">Footer</svelte:fragment>
+	<svelte:fragment slot="header">
+		<AppBar
+			gridColumns="grid-cols-3"
+			slotDefault="place-self-center"
+			background=""
+			slotTrail="place-content-end"
+		>
+			<svelte:fragment slot="lead">
+				<button on:click={drawerOpen}>
+					<span><Icon icon="material-symbols:menu" class="text-secondary-50" /> </span>
+				</button></svelte:fragment
+			>
+			<h1>TellMinZ</h1>
+		</AppBar>
+	</svelte:fragment>
+
+	<div class="p-8">
+		<slot />
+	</div>
 </AppShell>
