@@ -55,7 +55,7 @@
 		<AppBar
 			gridColumns="grid-cols-3"
 			slotDefault="place-self-center"
-			background=""
+			background="bg-primary-900"
 			slotTrail="place-content-end"
 		>
 			<svelte:fragment slot="lead">
