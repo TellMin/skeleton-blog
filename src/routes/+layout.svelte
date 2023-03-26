@@ -34,7 +34,7 @@
 					<span class="flex-auto content-center">Home</span>
 				</a>
 			</li>
-			<li class="pt-2">
+			<li>
 				<a href="/about" on:click={drawerClose}>
 					<span class="flex-auto content-center">About</span>
 				</a>
@@ -44,7 +44,7 @@
 
 	<style>
 		.drawer {
-			background: linear-gradient(0deg, rgba(33, 50, 83, 1) 0%, rgba(8, 132, 124, 1) 100%);
+			background: linear-gradient(120deg, rgba(33, 50, 83, 1) 0%, rgba(8, 132, 124, 0.8) 100%);
 		}
 	</style>
 </Drawer>
