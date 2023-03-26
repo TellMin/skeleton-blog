@@ -11,13 +11,9 @@
 	import type { DrawerSettings } from '@skeletonlabs/skeleton';
 	import Icon from '@iconify/svelte';
 
-	const drawerOpen = () => {
-		drawerStore.open(drawerSettings);
-	};
+	const drawerOpen = () => drawerStore.open(drawerSettings);
 
-	const drawerClose = () => {
-		drawerStore.close();
-	};
+	const drawerClose = () => drawerStore.close();
 
 	const drawerSettings: DrawerSettings = {
 		bgDrawer: 'drawer items-center',
@@ -37,6 +33,11 @@
 			<li>
 				<a href="/about" on:click={drawerClose}>
 					<span class="flex-auto content-center">About</span>
+				</a>
+			</li>
+			<li>
+				<a href="/blog" on:click={drawerClose}>
+					<span class="flex-auto content-center">Blog</span>
 				</a>
 			</li>
 		</ul>
