@@ -71,9 +71,7 @@
 	</svelte:fragment>
 
 	<div class="p-8">
-		<div style="opacity: 0.5;">
-			<MovingCircle />
-		</div>
+		<MovingCircle />
 		<slot />
 	</div>
 </AppShell>

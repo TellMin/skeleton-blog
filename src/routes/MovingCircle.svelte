@@ -234,7 +234,7 @@
 	}
 </script>
 
-<canvas bind:this={canvas} on:mousemove={handleMousemove} style="z-index: -1;"/>
+<canvas bind:this={canvas} on:mousemove={handleMousemove}/>
 
 <style>
 	canvas {
@@ -242,5 +242,7 @@
 		top: 0;
 		left: 0;
 		pointer-events: none;
+        z-index: -1;
+        opacity: 0.4;
 	}
 </style>
