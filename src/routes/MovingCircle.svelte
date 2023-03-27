@@ -7,7 +7,8 @@
 	let animationFrame: number;
 
     const MAX_SPEED = 10;
-    const DECELERATION_RATE = 0.999;
+    const DECELERATION_RATE = 0.9998;
+    const RANDOM_FORCE_INTERVAL = 10;
 
 	interface Circle {
 		x: number;
@@ -128,6 +129,12 @@
         // Apply deceleration
         circle.vx *= DECELERATION_RATE;
         circle.vy *= DECELERATION_RATE;
+
+        // Apply random force periodically
+        if (performance.now() % RANDOM_FORCE_INTERVAL < deltaTime) {
+        circle.vx += (Math.random() - 0.5) * 0.4;
+        circle.vy += (Math.random() * 0.2 - 0.3);
+        }
 
 		handleMouseover(circle, distance);
 	}
