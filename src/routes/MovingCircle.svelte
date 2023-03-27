@@ -34,12 +34,30 @@
 		circle.x += circle.vx * deltaTime;
 		circle.y += circle.vy * deltaTime;
 
-        if (circle.x - circle.radius < 0 || circle.x + circle.radius > canvas.width) {
-            circle.vx = -circle.vx;
-        }
-        if (circle.y - circle.radius < 0 || circle.y + circle.radius > canvas.height) {
-            circle.vy = -circle.vy;
-        }
+		// Reflect circles off the edges of the canvas
+		if (circle.x - circle.radius < 0 || circle.x + circle.radius > canvas.width) {
+			circle.vx = -circle.vx;
+		}
+		if (circle.y - circle.radius < 0 || circle.y + circle.radius > canvas.height) {
+			circle.vy = -circle.vy;
+		}
+
+		// Repel circles away from each other
+		for (const otherCircle of circles) {
+			if (otherCircle === circle) continue;
+
+			const dx = circle.x - otherCircle.x;
+			const dy = circle.y - otherCircle.y;
+			const distance = Math.sqrt(dx * dx + dy * dy);
+			const minDistance = circle.radius + otherCircle.radius;
+
+			if (distance < minDistance) {
+				const angle = Math.atan2(dy, dx);
+				const force = (minDistance - distance) * 0.01;
+				circle.vx += Math.cos(angle) * force;
+				circle.vy += Math.sin(angle) * force;
+			}
+		}
 
 		const dx = circle.x - mouseX;
 		const dy = circle.y - mouseY;
@@ -100,24 +118,24 @@
 	}
 
 	onMount(() => {
-        if (typeof window === 'undefined') return;
+		if (typeof window === 'undefined') return;
 
 		context = canvas.getContext('2d');
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;
 
-		for (let i = 0; i < 500; i++) {
+		for (let i = 0; i < 100; i++) {
 			const x = Math.random() * canvas.width;
 			const y = Math.random() * canvas.height;
 			circles.push(createCircle(x, y));
 		}
 
 		animationFrame = requestAnimationFrame(gameLoop);
-        window.addEventListener('mousemove', handleMousemove);
-        return () => {
-				cancelAnimationFrame(animationFrame);
-				window.removeEventListener('mousemove', handleMousemove);
-			};
+		window.addEventListener('mousemove', handleMousemove);
+		return () => {
+			cancelAnimationFrame(animationFrame);
+			window.removeEventListener('mousemove', handleMousemove);
+		};
 	});
 
 	function handleMousemove(event: MouseEvent): void {
