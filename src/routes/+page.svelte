@@ -1,5 +1,3 @@
-<script lang="ts">
-	import MovingCircle from './MovingCircle.svelte';
-</script>
-
-<MovingCircle />
+<h1>
+	Welcome to TellMinZ!
+</h1>

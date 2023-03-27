@@ -214,7 +214,7 @@
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;
 
-		for (let i = 0; i < 100; i++) {
+		for (let i = 0; i < 50; i++) {
 			const x = Math.random() * canvas.width;
 			const y = Math.random() * canvas.height;
 			circles.push(createCircle(x, y));
@@ -234,7 +234,7 @@
 	}
 </script>
 
-<canvas bind:this={canvas} on:mousemove={handleMousemove} />
+<canvas bind:this={canvas} on:mousemove={handleMousemove} style="z-index: -1;"/>
 
 <style>
 	canvas {
