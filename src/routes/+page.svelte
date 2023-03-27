@@ -1,3 +1,3 @@
-<h2>Hello</h2>
-
-<p class="text-primary-500">This is My Page.</p>
+<h1>
+	Welcome to TellMinZ!
+</h1>

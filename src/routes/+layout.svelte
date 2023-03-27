@@ -19,6 +19,9 @@
 		bgDrawer: 'drawer items-center',
 		width: 'w-[280px]'
 	};
+
+	import MovingCircle from './MovingCircle.svelte';
+
 </script>
 
 <Drawer>
@@ -68,6 +71,7 @@
 	</svelte:fragment>
 
 	<div class="p-8">
+		<MovingCircle />
 		<slot />
 	</div>
 </AppShell>
