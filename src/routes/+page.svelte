@@ -1,3 +1,5 @@
-<h2>Hello</h2>
+<script lang="ts">
+	import MovingCircle from './MovingCircle.svelte';
+</script>
 
-<p class="text-primary-500">This is My Page.</p>
+<MovingCircle />
