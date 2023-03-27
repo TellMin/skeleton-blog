@@ -7,6 +7,7 @@
 	let animationFrame: number;
 
     const MAX_SPEED = 10;
+    const DECELERATION_RATE = 0.999;
 
 	interface Circle {
 		x: number;
@@ -120,9 +121,13 @@
         // Clamp the velocity within the maximum speed
         const speed = Math.sqrt(circle.vx * circle.vx + circle.vy * circle.vy);
         if (speed > MAX_SPEED) {
-        circle.vx = (circle.vx / speed) * MAX_SPEED;
-        circle.vy = (circle.vy / speed) * MAX_SPEED;
+            circle.vx = (circle.vx / speed) * MAX_SPEED;
+            circle.vy = (circle.vy / speed) * MAX_SPEED;
         }
+
+        // Apply deceleration
+        circle.vx *= DECELERATION_RATE;
+        circle.vy *= DECELERATION_RATE;
 
 		handleMouseover(circle, distance);
 	}
