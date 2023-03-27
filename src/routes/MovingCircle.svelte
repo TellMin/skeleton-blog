@@ -6,6 +6,8 @@
 	let context: CanvasRenderingContext2D | null;
 	let animationFrame: number;
 
+    const MAX_SPEED = 10;
+
 	interface Circle {
 		x: number;
 		y: number;
@@ -114,6 +116,14 @@
 			circle.vx += Math.cos(angle) * force;
 			circle.vy += Math.sin(angle) * force;
 		}
+
+        // Clamp the velocity within the maximum speed
+        const speed = Math.sqrt(circle.vx * circle.vx + circle.vy * circle.vy);
+        if (speed > MAX_SPEED) {
+        circle.vx = (circle.vx / speed) * MAX_SPEED;
+        circle.vy = (circle.vy / speed) * MAX_SPEED;
+        }
+
 		handleMouseover(circle, distance);
 	}
 
