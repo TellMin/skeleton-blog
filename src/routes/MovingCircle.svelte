@@ -130,14 +130,20 @@
     }
 
 	function drawCircle(circle: Circle): void {
-        const gradient = context?.createRadialGradient(circle.x, circle.y, 0, circle.x, circle.y, circle.radius);
-		
-        if(!gradient) return;
-        
-        gradient?.addColorStop(0, `rgba(${circle.color}, 0)`);
-        gradient?.addColorStop(1, `rgba(${circle.color}, 1)`);
-        
+        const originalColor = '255, 255, 255';
+        const [r1, g1, b1] = circle.color.split(', ').map(Number);
+        const [r2, g2, b2] = originalColor.split(', ').map(Number);
+
+        const r = r1 * (1 - circle.colorProgress) + r2 * circle.colorProgress;
+        const g = g1 * (1 - circle.colorProgress) + g2 * circle.colorProgress;
+        const b = b1 * (1 - circle.colorProgress) + b2 * circle.colorProgress;
+        const interpolatedColor = `${r}, ${g}, ${b}`;
+
         if(!context) return;
+
+        const gradient = context.createRadialGradient(circle.x, circle.y, circle.radius/2*1.5, circle.x, circle.y, circle.radius);
+        gradient.addColorStop(0, `rgba(${interpolatedColor}, 0)`);
+        gradient.addColorStop(1, `rgba(${interpolatedColor}, 0.8)`);
 
         context.beginPath();
         context.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
