@@ -13,20 +13,64 @@
 		vy: number;
 		radius: number;
 		color: string;
+        transitionStartTime: number;
+        colorProgress: number;
 	}
 
+    function hslToRgb(h: number, s: number, l: number): string {
+        const c = (1 - Math.abs(2 * l - 1)) * s;
+        const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+        const m = l - c / 2;
+        let r = 0;
+        let g = 0;
+        let b = 0;
+
+        if (h < 60) {
+        r = c;
+        g = x;
+        b = 0;
+        } else if (h < 120) {
+        r = x;
+        g = c;
+        b = 0;
+        } else if (h < 180) {
+        r = 0;
+        g = c;
+        b = x;
+        } else if (h < 240) {
+        r = 0;
+        g = x;
+        b = c;
+        } else if (h < 300) {
+        r = x;
+        g = 0;
+        b = c;
+        } else {
+        r = c;
+        g = 0;
+        b = x;
+        }
+
+        return `${Math.round((r + m) * 255)}, ${Math.round((g + m) * 255)}, ${Math.round((b + m) * 255)}`;
+    }
+
 	function randomColor(): string {
-		return `hsl(${Math.random() * 360}, 100%, 50%)`;
+        const h = Math.random() * 360;
+        const s = 1;
+        const l = 0.5;
+        return hslToRgb(h, s, l);
 	}
 
 	function createCircle(x: number, y: number): Circle {
 		return {
 			x,
 			y,
-			vx: Math.random() * 2 - 1,
-			vy: Math.random() * 2 - 1,
+            vx: (Math.random() - 0.5) * 4,
+            vy: (Math.random() - 0.5) * 4,
 			radius: Math.random() * 20 + 10,
-			color: 'white'
+            color: '255, 255, 255',
+            transitionStartTime: 0,
+            colorProgress: 0,
 		};
 	}
 
@@ -72,33 +116,33 @@
 		}
 		handleMouseover(circle, distance);
 	}
+
 	function handleMouseover(circle: Circle, distance: number): void {
-		if (distance < circle.radius && circle.color === 'white') {
-			circle.color = randomColor();
-			setTimeout(() => {
-				circle.color = 'white';
-			}, 3000);
-		}
-	}
+        if (distance < circle.radius && circle.color === '255, 255, 255') {
+            circle.color = randomColor();
+            circle.transitionStartTime = performance.now();
+
+            setTimeout(() => {
+                circle.color = '255, 255, 255';
+                circle.transitionStartTime = performance.now();
+            }, 3000);
+        }
+    }
 
 	function drawCircle(circle: Circle): void {
-		const dx = circle.x - mouseX;
-		const dy = circle.y - mouseY;
-		const distance = Math.sqrt(dx * dx + dy * dy);
+        const gradient = context?.createRadialGradient(circle.x, circle.y, 0, circle.x, circle.y, circle.radius);
+		
+        if(!gradient) return;
+        
+        gradient?.addColorStop(0, `rgba(${circle.color}, 0)`);
+        gradient?.addColorStop(1, `rgba(${circle.color}, 1)`);
+        
+        if(!context) return;
 
-		if (distance < circle.radius && circle.color === 'white') {
-			circle.color = randomColor();
-			setTimeout(() => {
-				circle.color = 'white';
-			}, 3000);
-		}
-
-		if (!context) return;
-
-		context.beginPath();
-		context.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI);
-		context.fillStyle = circle.color;
-		context.fill();
+        context.beginPath();
+        context.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
+        context.fillStyle = gradient;
+        context.fill();
 	}
 
 	let circles: Circle[] = [];
@@ -115,7 +159,25 @@
 		}
 
 		animationFrame = requestAnimationFrame(gameLoop);
-	}
+
+        for (const circle of circles) {
+            const timeSinceTransition = (timestamp - circle.transitionStartTime) / 1000;
+            circle.colorProgress = Math.min(timeSinceTransition / 3, 1);
+
+            const otherCircles = circles.filter(c => c !== circle);
+            
+            for (const otherCircle of otherCircles) {
+                const dx = circle.x - otherCircle.x;
+                const dy = circle.y - otherCircle.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                const minDistance = circle.radius + otherCircle.radius;
+
+                if (distance < minDistance && circle.color !== '255, 255, 255') {
+                    handleMouseover(otherCircle, distance); 
+                }
+            }
+        }
+    }
 
 	onMount(() => {
 		if (typeof window === 'undefined') return;
