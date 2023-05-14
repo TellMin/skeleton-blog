@@ -21,7 +21,6 @@
 	};
 
 	import MovingCircle from './MovingCircle.svelte';
-
 </script>
 
 <Drawer>
