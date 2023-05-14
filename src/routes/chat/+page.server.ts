@@ -1,9 +1,11 @@
-import type { PageServerLoad } from './$types';
+import type { Actions } from './$types';
 
-export const load = (async () => {
-	return {
-		body: {
-			item: 'chat'
-		}
-	};
-}) satisfies PageServerLoad;
+export const actions = {
+	default: async ({ request }) => {
+		const inputMessage = (await request.formData()).get('input');
+		const messages = {
+			reply: inputMessage
+		};
+		return messages;
+	}
+} satisfies Actions;

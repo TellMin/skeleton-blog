@@ -1,8 +1,16 @@
 <script lang="ts">
-	import type { PageData } from './$types';
-	export let data: PageData;
+	import type { ActionData } from './$types';
+	export let form: ActionData;
 </script>
 
 <h2>Chat</h2>
 
-<div>{data.body.item}</div>
+<form method="POST">
+	<label>
+		Input
+		<input name="input" type="text" />
+	</label>
+	<button>Post</button>
+</form>
+
+<h3>{form?.reply}</h3>

@@ -42,6 +42,11 @@
 					<span class="flex-auto content-center">Blog</span>
 				</a>
 			</li>
+			<li>
+				<a href="/chat" on:click={drawerClose}>
+					<span class="flex-auto content-center">Chat</span>
+				</a>
+			</li>
 		</ul>
 	</div>
 
