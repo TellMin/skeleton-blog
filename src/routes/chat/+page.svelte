@@ -5,12 +5,12 @@
 
 <h2>Chat</h2>
 
-<form method="POST">
-	<label>
-		Input
-		<input name="input" type="text" />
-	</label>
-	<button>Post</button>
-</form>
-
-<h3>{form?.reply}</h3>
+<div class="card p-4 mt-4">
+	<form method="POST">
+		<label class="label">
+			<input class="input" name="input" type="text" placeholder="Input" />
+		</label>
+		<button type="submit" class="btn variant-filled">Post</button>
+	</form>
+</div>
+<div class="card p-4 mt-4">{form?.reply}</div>
