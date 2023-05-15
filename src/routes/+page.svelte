@@ -1,3 +1,1 @@
-<h1>
-	Welcome to TellMinZ!
-</h1>
+<h1>Welcome to TellMinZ!</h1>
