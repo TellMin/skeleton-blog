@@ -57,18 +57,18 @@ const isIncomingMessage = (obj: unknown): obj is IncomingMessage => {
 
 	const maybeIncomingMessage = obj as IncomingMessage;
 
-	return(
+	return (
 		typeof maybeIncomingMessage.statusCode === 'number' &&
 		maybeIncomingMessage.statusCode === 200 &&
 		typeof maybeIncomingMessage.headers === 'object' &&
 		maybeIncomingMessage.headers['content-type'] === 'text/event-stream' &&
 		typeof maybeIncomingMessage[Symbol.asyncIterator] === 'function'
 	);
-}
+};
 
 const parseCreateChatCompletionResponseToIncomingMessage = (response: unknown): IncomingMessage => {
 	if (!isIncomingMessage(response)) {
 		throw new Error('response is not IncomingMessage');
 	}
 	return response;
-}
+};
