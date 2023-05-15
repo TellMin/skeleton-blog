@@ -47,6 +47,11 @@
 					<span class="flex-auto content-center">Chat</span>
 				</a>
 			</li>
+			<li>
+				<a href="/streamChat" on:click={drawerClose}>
+					<span class="flex-auto content-center">StreamChat</span>
+				</a>
+			</li>
 		</ul>
 	</div>
 
