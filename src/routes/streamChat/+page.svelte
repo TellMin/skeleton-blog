@@ -4,6 +4,7 @@
 	let responseFromStreamChat = '';
 
 	const readStream = async () => {
+		responseFromStreamChat = '';
 		const response = await fetch('/api/streamChat', {
 			method: 'POST',
 			headers: {

@@ -28,7 +28,7 @@ export async function* streamChat(message: string) {
 		responseType: 'stream'
 	});
 
-	const stream = response.data as unknown as IncomingMessage;
+	const stream = parseCreateChatCompletionResponseToIncomingMessage(response.data);
 	for await (const chunk of stream) {
 		const lines: string[] = chunk
 			.toString('utf8')
@@ -48,4 +48,27 @@ export async function* streamChat(message: string) {
 			}
 		}
 	}
+}
+
+const isIncomingMessage = (obj: unknown): obj is IncomingMessage => {
+	if (typeof obj !== 'object' || obj === null) {
+		return false;
+	}
+
+	const maybeIncomingMessage = obj as IncomingMessage;
+
+	return(
+		typeof maybeIncomingMessage.statusCode === 'number' &&
+		maybeIncomingMessage.statusCode === 200 &&
+		typeof maybeIncomingMessage.headers === 'object' &&
+		maybeIncomingMessage.headers['content-type'] === 'text/event-stream' &&
+		typeof maybeIncomingMessage[Symbol.asyncIterator] === 'function'
+	);
+}
+
+const parseCreateChatCompletionResponseToIncomingMessage = (response: unknown): IncomingMessage => {
+	if (!isIncomingMessage(response)) {
+		throw new Error('response is not IncomingMessage');
+	}
+	return response;
 }
