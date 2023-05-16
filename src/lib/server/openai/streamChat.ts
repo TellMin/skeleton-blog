@@ -24,30 +24,36 @@ export async function* streamChat(message: string) {
 		stream: true
 	};
 
-	const response = await openAIClient.createChatCompletion(chatCompletionRequest, {
-		responseType: 'stream'
-	});
+	try {
+		const response = await openAIClient.createChatCompletion(chatCompletionRequest, {
+			responseType: 'stream'
+		});
 
-	const stream = parseCreateChatCompletionResponseToIncomingMessage(response.data);
-	for await (const chunk of stream) {
-		const lines: string[] = chunk
-			.toString('utf8')
-			.split('\n')
-			.filter((line: string) => line.trim().startsWith('data: '));
+		const stream = parseCreateChatCompletionResponseToIncomingMessage(response.data);
+		for await (const chunk of stream) {
+			const lines: string[] = chunk
+				.toString('utf8')
+				.split('\n')
+				.filter((line: string) => line.trim().startsWith('data: '));
 
-		for (const line of lines) {
-			const message = line.replace(/^data: /, '');
-			if (message === '[DONE]') {
-				return;
-			}
+			for (const line of lines) {
+				const message = line.replace(/^data: /, '');
+				if (message === '[DONE]') {
+					return;
+				}
 
-			const json = JSON.parse(message);
-			const token: string | undefined = json.choices[0].delta.content;
-			if (token) {
-				yield token;
+				const json = JSON.parse(message);
+				const token: string | undefined = json.choices[0].delta.content;
+				if (token) {
+					yield token;
+				}
 			}
 		}
+	} catch (error) {
+		console.error(error);
 	}
+
+	return;
 }
 
 const isIncomingMessage = (obj: unknown): obj is IncomingMessage => {

@@ -11,9 +11,15 @@ export const chat = async (messages: Array<ChatCompletionRequestMessage> | undef
 		messages
 	};
 
-	// Send the request to OpenAI's chat completion API
-	const chatCompletion = await openAIClient.createChatCompletion(chatCompletionRequest);
+	try {
+		// Send the request to OpenAI's chat completion API
+		const chatCompletion = await openAIClient.createChatCompletion(chatCompletionRequest);
 
-	// Return the first response from OpenAI
-	return chatCompletion.data.choices[0].message?.content;
+		// Return the first response from OpenAI
+		return chatCompletion.data.choices[0].message?.content;
+	} catch (error) {
+		console.error(error);
+	}
+
+	return;
 };
